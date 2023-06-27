@@ -1,0 +1,53 @@
+plugins {
+    id 'java'
+    id 'io.papermc.paperweight.userdev' version '1.5.5'
+}
+
+defaultTasks 'build'
+
+project.group = 'ofc'
+project.version = '1.0'
+
+repositories {
+    mavenCentral()
+    maven { url = 'https://repo.papermc.io/repository/maven-public/' }
+    maven { url = 'https://m2.dv8tion.net/releases' }
+}
+
+dependencies {
+    paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$minecraftVersion-R0.1-SNAPSHOT")
+    compileOnly('net.dv8tion:JDA:5.0.0-beta.11')
+    //compileOnly('org.slf4j:slf4j-api:2.0.6')
+    //compileOnly('ch.qos.logback:logback-classic:1.4.6')
+}
+
+base {
+    archivesName = "${rootProject.name}-${project.name}"
+}
+
+assemble {
+    dependsOn reobfJar
+    doLast {
+        delete fileTree("$buildDir").include('**/*-dev*.jar')
+    }
+}
+
+reobfJar {
+    outputJar = file("$buildDir/libs/${rootProject.name}-${project.name}-${project.version}.jar")
+}
+
+compileJava {
+    options.encoding = 'UTF-8'
+    options.release.set(17)
+}
+
+javadoc {
+    options.encoding = 'UTF-8'
+}
+
+processResources {
+    filteringCharset = 'UTF-8'
+    filesMatching('plugin.yml') {
+        expand('version': project.version)
+    }
+}
