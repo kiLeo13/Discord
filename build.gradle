@@ -11,14 +11,15 @@ project.version = '1.0'
 repositories {
     mavenCentral()
     maven { url = 'https://repo.papermc.io/repository/maven-public/' }
-    maven { url = 'https://m2.dv8tion.net/releases' }
+    maven { url = 'https://repo.opencollab.dev/maven-snapshots/' }
 }
 
 dependencies {
     paperweightDevelopmentBundle("io.papermc.paper:dev-bundle:$minecraftVersion-R0.1-SNAPSHOT")
-    compileOnly('net.dv8tion:JDA:5.0.0-beta.11')
-    //compileOnly('org.slf4j:slf4j-api:2.0.6')
-    //compileOnly('ch.qos.logback:logback-classic:1.4.6')
+    implementation('net.dv8tion:JDA:5.0.0-beta.11')
+    compileOnly('ch.qos.logback:logback-classic:1.4.6')
+    compileOnly('org.geysermc.floodgate:api:2.2.0-SNAPSHOT')
+    compileOnly('org.slf4j:slf4j-api:2.0.6')
 }
 
 base {

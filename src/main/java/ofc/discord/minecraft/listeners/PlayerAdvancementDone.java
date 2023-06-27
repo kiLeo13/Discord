@@ -12,10 +12,12 @@ public class PlayerAdvancementDone implements Listener {
 
     @EventHandler
     public void onPlayerAdvancementDone(PlayerAdvancementDoneEvent event) {
+
         AdvancementDisplay display = event.getAdvancement().getDisplay();
-        if (display == null) {
-            return; // nothing to display
-        }
+
+        // nothing to display
+        if (display == null) return;
+
         String key = display.frame().translationKey();
         String message = Language.getInstance().getOrDefault("chat.type.advancement." + key);
         broadcaster.send(event.getPlayer(), message, DiscordBroadcaster.EventType.ADVANCEMENT);

@@ -9,11 +9,10 @@ import ofc.discord.Discord;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
-import org.bukkit.entity.Player;
-
-import java.util.Collection;
+import org.geysermc.floodgate.api.FloodgateApi;
 
 public class DiscordStatus {
+    private static final FloodgateApi floodgate = FloodgateApi.getInstance();
     private static EmbedBuilder builder = new EmbedBuilder();
     private static DiscordStatus instance;
     private static TextChannel status;
@@ -38,7 +37,9 @@ public class DiscordStatus {
 
         FileConfiguration config = Discord.getPlugin().getConfig();
         Server server = Bukkit.getServer();
-        int online = server.getOnlinePlayers().size();
+        int bedrock = floodgate.getPlayerCount();
+        int java = server.getOnlinePlayers().size() - bedrock;
+        int total = java + bedrock;
 
         String url = config.getString("server-image");
 
@@ -46,7 +47,14 @@ public class DiscordStatus {
                 .setTitle("Minecraft Server")
                 .setThumbnail(url == null || url.isBlank() ? null : url)
                 .addField("🌵 Versão", "`" + server.getMinecraftVersion() + "`", true) // Version
-                .addField("👥 Online", "`" + (online < 10 ? "0" + online : online) + "`", true)
+                .addField("", "", true)
+                .addField("👥 Online (" + (total < 10 ? "0" + total : total) + ")", "`" + String.format("""
+                        Bedrock: `%s`
+                        Java: `%s`
+                        """,
+                        bedrock < 10 ? "0" + bedrock : bedrock,
+                        java <  10 ? "0" + java : java
+                ) + "`", true) // Online players
                 .addField("🌐 Status", "", true)
                 .setDescription("Informações do servidor de Minecraft atualizadas em tempo real.")
                 .setFooter(guild.getName(), guild.getIconUrl());
