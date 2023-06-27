@@ -9,6 +9,9 @@ import ofc.discord.Discord;
 import org.bukkit.Bukkit;
 import org.bukkit.Server;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.entity.Player;
+
+import java.util.Collection;
 
 public class DiscordStatus {
     private static EmbedBuilder builder = new EmbedBuilder();
@@ -35,6 +38,7 @@ public class DiscordStatus {
 
         FileConfiguration config = Discord.getPlugin().getConfig();
         Server server = Bukkit.getServer();
+        int online = server.getOnlinePlayers().size();
 
         String url = config.getString("server-image");
 
@@ -42,7 +46,8 @@ public class DiscordStatus {
                 .setTitle("Minecraft Server")
                 .setThumbnail(url == null || url.isBlank() ? null : url)
                 .addField("🌵 Versão", "`" + server.getMinecraftVersion() + "`", true) // Version
-                .addField("", "", true)
+                .addField("👥 Online", "`" + (online < 10 ? "0" + online : online) + "`", true)
+                .addField("🌐 Status", "", true)
                 .setDescription("Informações do servidor de Minecraft atualizadas em tempo real.")
                 .setFooter(guild.getName(), guild.getIconUrl());
 
