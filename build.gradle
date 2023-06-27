@@ -1,6 +1,7 @@
 plugins {
     id 'java'
     id 'io.papermc.paperweight.userdev' version '1.5.5'
+    id 'com.github.johnrengelman.shadow' version '8.1.1'
 }
 
 defaultTasks 'build'
@@ -22,19 +23,16 @@ dependencies {
     compileOnly('org.slf4j:slf4j-api:2.0.6')
 }
 
-base {
-    archivesName = "${rootProject.name}-${project.name}"
-}
-
 assemble {
     dependsOn reobfJar
-    doLast {
-        delete fileTree("$buildDir").include('**/*-dev*.jar')
-    }
 }
 
 reobfJar {
-    outputJar = file("$buildDir/libs/${rootProject.name}-${project.name}-${project.version}.jar")
+    outputJar = file("$buildDir/libs/${project.name}-${project.version}.jar")
+}
+
+shadowJar {
+    minimize()
 }
 
 compileJava {
