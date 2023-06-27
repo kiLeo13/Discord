@@ -1,0 +1,4 @@
+name: Discord
+version: '${project.version}'
+main: ofc.discord.Discord
+api-version: '1.20'
