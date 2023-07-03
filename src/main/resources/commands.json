@@ -1,0 +1,215 @@
+{
+  "unban": {
+    "description": "Desbane um jogador do servidor de Minecraft.",
+    "permission": "BAN_MEMBERS",
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador que deseja desbanir.",
+        "required": true
+      }
+    ]
+  },
+  "kick": {
+    "description": "Expulsa um jogador do servidor de Minecraft.",
+    "permission": "KICK_MEMBERS",
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador que deseja expuslar.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "reason",
+        "description": "O motivo de ter sido expulso.",
+        "required": false
+      }
+    ]
+  },
+  "pteleport": {
+    "description": "Teletransporta um jogador até outro.",
+    "permission": "MANAGE_SERVER",
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "playerf",
+        "description": "O jogador a ser teletransportado.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "playert",
+        "description": "O jogador no qual irá receber o outro jogador.",
+        "required": true
+      }
+    ]
+  },
+  "ping": {
+    "description": "Comando para verificar o ping de um jogador.",
+    "permission": null,
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador a ter o ping verificado.",
+        "required": true
+      }
+    ]
+  },
+  "tell": {
+    "description": "Envia uma mensagem privada para um jogador.",
+    "permission": null,
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador no qual será enviado a mensagem privada.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "content",
+        "description": "A mensagem a ser enviada ao jogador.",
+        "required": true
+      }
+    ]
+  },
+  "teleport": {
+    "description": "Teletransporta um jogador para uma certa coordenada.",
+    "permission": "MANAGE_SERVER",
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador no qual será teletransportado. '@a' denota todos os jogadores online.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "NUMBER",
+        "name": "x",
+        "description": "A posição X para teletransportar o jogador.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "NUMBER",
+        "name": "y",
+        "description": "A camada para teletransportar o jogador.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "NUMBER",
+        "name": "z",
+        "description": "A posição Z para teletransportar o jogador.",
+        "required": true
+      },
+      {
+        "choices": [
+          {
+            "name": "Overworld",
+            "value": "world"
+          },
+          {
+            "name": "The Nether",
+            "value": "nether"
+          },
+          {
+            "name": "The End",
+            "value": "end"
+          }
+        ],
+        "optionType": "STRING",
+        "name": "environment",
+        "description": "Para qual dimensão estas coordenadas apontam.",
+        "required": true
+      }
+    ]
+  },
+  "health": {
+    "description": "Define a vida do jogador para um valor específico.",
+    "permission": "MANAGE_SERVER",
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador que terá sua vida redefinida.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "NUMBER",
+        "name": "health",
+        "description": "Quanto de vida que o jogador deve ficar (0 ou menos irá automaticamente matar o jogador).",
+        "required": true
+      }
+    ]
+  },
+  "whitelist": {
+    "description": "Comando para gerenciar a whitelist do servidor.",
+    "permission": "MANAGE_SERVER",
+    "options": [
+      {
+        "choices": [
+          {
+            "name": "Add",
+            "value": "add"
+          },
+          {
+            "name": "Remove",
+            "value": "remove"
+          },
+          {
+            "name": "List",
+            "value": "list"
+          }
+        ],
+        "optionType": "STRING",
+        "name": "method",
+        "description": "Define o que executar ao prosseguir com o comando.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador a ser removido/adicionado na whitelist (opcional caso o `method` seja `list`).",
+        "required": false
+      }
+    ]
+  },
+  "ban": {
+    "description": "Bane um jogador do servidor de Minecraft.",
+    "permission": "BAN_MEMBERS",
+    "options": [
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "player",
+        "description": "O jogador que deseja banir.",
+        "required": true
+      },
+      {
+        "choices": null,
+        "optionType": "STRING",
+        "name": "reason",
+        "description": "O motivo do ban.",
+        "required": false
+      }
+    ]
+  }
+}

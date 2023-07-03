@@ -4,35 +4,36 @@
 # Leaving this empty will make the plugin shutdown.
 token: ''
 
-# Insert the id of the broadcast channel.
-# The broadcast channel is used for:
-# - Broadcast players' advancements.
-# - Broadcast players' deaths.
-# - Broadcast players' messages in the chat.
-# - Broadcast when a player joins/leaves the game.
+# Insert the Webhook URL of your broadcast channel to be used to send players' messages.
+# Leaving this option empty will throw an exception every time a player sends a message in the chat.
+broadcast-webhook: ''
+
+# The channel that will be broadcast every server update, such as:
+# - Player join/quit.
+# - Player message.
+# - Player death.
+# - Player advancement done.
 broadcast-channel: ''
 
 # The status channel that will store all the information about the server.
-#
 status-channel: ''
 
-# The url image of the server.
+# The url image of the minecraft server.
 # If you want to ignore this field just leave it empty.
-server-image: ''
+server-icon: ''
 
-# DO NOT touch this option unless you know EXACTLY what you're doing.
-# The message id of the server status.
-status-message: ''
+# The image that will be shown in the embed of the status message.
+# If you want to ignore this field just leave it empty.
+status-banner: ''
 
 # How the {pf} placeholder should be displayed.
-discord-prefix: "<dark_blue>[<blue>Discord<dark_blue>]<reset>"
+discord-prefix: "<blue>[Discord]<reset>"
 
 # How the reference message should be displayed above the real message sent in Discord.
 # in the Minecraft chat.
 # Placeholders:
 # {pf} - The prefix in the Minecraft chat to inform that the message was sent from Discord.
 # {username} - The display name of who sent the referenced message.
-# {user} - The real Discord name of who sent the message.
 # {message} - The content of the referenced message in Discord.
 discord-with-reply: "<i><dark_gray>replying to - </dark_gray></i><gray>{username}: {message}"
 
@@ -40,15 +41,27 @@ discord-with-reply: "<i><dark_gray>replying to - </dark_gray></i><gray>{username
 # Placeholders:
 # {pf} - The prefix in the Minecraft chat to inform that the message was sent from Discord.
 # {username} - The display name of who sent the message.
-# {user} - The real Discord name of who sent the message.
 # {message} - The content of the message sent in Discord.
-#
 discord-format: "{pf} <white>{username}: {message}"
 
 # The information provided in the status message.
 # Always provide the port along with the IP like this: 'ip:port'
 # I.e: '123.45.67.89:25565'
 # Leave it empty if the ip does not exist for your server.
-status-message-data:
-  ip-java: '0.0.0.0'
-  ip-bedrock: '0.0.0.0'
+# The supported versions if you use ViaVersion, I.e: '1.19 - 1.19.4' or '1.19+'
+# - And always, if you want to omit one of these information just leave it empty/blank.
+server-data:
+  ip:
+    java: '0.0.0.0'
+    bedrock: '0.0.0.0'
+  versions: ''
+
+# DO NOT touch this option unless you know EXACTLY what you're doing.
+# The message id of the server status.
+status-message: ''
+
+# World custom values
+# ONLY TOUCH IT IF YOU KNOW WHAT YOU'RE DOING
+overworld: 'world'
+nether: 'world_nether'
+end: 'world_the_end'

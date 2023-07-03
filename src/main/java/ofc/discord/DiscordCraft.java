@@ -6,16 +6,23 @@ import net.dv8tion.jda.api.entities.Activity;
 import net.dv8tion.jda.api.hooks.AnnotatedEventManager;
 import net.dv8tion.jda.api.requests.GatewayIntent;
 import net.dv8tion.jda.api.utils.cache.CacheFlag;
-import ofc.discord.discord.listeners.*;
+import ofc.discord.discord.SlashCommandHandler;
+import ofc.discord.discord.minecraft.commands.*;
+import ofc.discord.minecraft.commands.General;
+import ofc.discord.minecraft.ServerStatus;
 import ofc.discord.minecraft.listeners.*;
+import ofc.discord.discord.Discord;
+import ofc.discord.discord.listeners.DiscordMessageReceived;
 import org.bukkit.Bukkit;
+import org.bukkit.command.PluginCommand;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
+import java.util.concurrent.TimeUnit;
 
-public final class Discord extends JavaPlugin {
+public final class DiscordCraft extends JavaPlugin {
     private static final ExecutorService threadJDA = Executors.newSingleThreadExecutor();
     private static JDA jda;
     private static Plugin plugin;
@@ -25,27 +32,33 @@ public final class Discord extends JavaPlugin {
         plugin = this;
 
         saveDefaultConfig();
-        registerListeners();
 
-        // Start the bot on another thread to avoid hogging the server
+        // Registering plugin stuff
+        registerListeners();
+        registerCommands();
+
+        // Start the bot on another thread to avoid stalling the server
         threadJDA.execute(this::runJDA);
     }
 
     @Override
     public void onDisable() {
+        Discord.updateStatus(ServerStatus.OFFLINE);
 
         // Shut down JDA (Discord bot)
-        Bukkit.getLogger().info("\\033[0;33mShutting down Discord bot...");
-        try {
-            jda.shutdownNow();
-            jda.awaitShutdown();
+        if (jda != null) {
+            Bukkit.getLogger().info("Shutting down Discord bot...");
+            try {
+                jda.shutdown();
+                jda.awaitShutdown(15, TimeUnit.SECONDS);
 
-            Bukkit.getLogger().info("Discord bot has been successfully shut down");
-        } catch (InterruptedException e) {
-            e.printStackTrace();
+                Bukkit.getLogger().info("Discord bot has been successfully shut down");
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
         }
 
-        Bukkit.getLogger().info("\\033[0;33mShutting down JDA executor...");
+        Bukkit.getLogger().info("Shutting down JDA executor...");
         threadJDA.shutdown();
         Bukkit.getLogger().info("JDA executor has been successfully shut down");
         Bukkit.getLogger().info("All done! Bye bye ;)");
@@ -63,12 +76,12 @@ public final class Discord extends JavaPlugin {
         String token = this.getConfig().getString("token");
 
         if (token == null || token.isBlank()) {
-            Bukkit.getPluginManager().disablePlugin(this);
             System.err.println("Token not found, exiting...");
+            Bukkit.getPluginManager().disablePlugin(this);
             return;
         }
 
-        this.getLogger().info("\\033[0;33mStarting Discord bot...");
+        this.getLogger().info("Starting Discord bot...");
 
         try {
             jda = JDABuilder.createDefault(token,
@@ -83,11 +96,26 @@ public final class Discord extends JavaPlugin {
 
             registerJDAListeners();
 
-            this.getLogger().info("\\033[0;32mDiscord bot has been successfully started.");
+            this.getLogger().info("Discord bot has been successfully started.");
         } catch (InterruptedException e) {
             e.printStackTrace();
             System.err.println("Failed to login, exiting...");
         }
+
+        SlashCommandHandler.addCommands(
+                new Ban("ban"),
+                new Kick("kick"),
+                new Health("health"),
+                new Teleport("teleport"),
+                new Tell("tell"),
+                new Unban("unban"),
+                new Whitelist("whitelist"),
+                new PlayerTeleport("pteleport"),
+                new Ping("ping")
+        );
+        Discord.refreshData();
+        Discord.updateStatus(ServerStatus.ONLINE);
+        Discord.serverEnable();
     }
 
     private void registerListeners() {
@@ -99,8 +127,16 @@ public final class Discord extends JavaPlugin {
         Bukkit.getPluginManager().registerEvents(new PlayerRunCommand(), this);
     }
 
+    private void registerCommands() {
+        PluginCommand general = this.getCommand("discord");
+        if (general != null) general.setExecutor(new General());
+    }
+
     private void registerJDAListeners() {
-        jda.addEventListener(new MessageReceived());
+        jda.addEventListener(
+                new DiscordMessageReceived(),
+                new SlashCommandHandler()
+        );
         this.getLogger().info("Successfully registered " + jda.getRegisteredListeners().size() + " listeners.");
     }
 }
